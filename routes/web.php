@@ -3,14 +3,14 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\HomeController;      // ← ADD THIS
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');   // ← CHANGED
 
 // Public trip listing – anyone can see
 Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
+Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips.show');
 
 // Public blog routes
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

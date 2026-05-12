@@ -118,4 +118,10 @@ class TripController extends Controller
 
         return redirect()->route('dashboard')->with('success', 'Trip deleted successfully!');
     }
+
+    public function show(Trip $trip)
+    {
+        return view('trips.show', compact('trip'));
+    }
+
 }
