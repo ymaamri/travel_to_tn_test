@@ -20,6 +20,14 @@
                         {{ __('Available Trips') }}
                     </x-nav-link>
 
+                    <x-nav-link :href="route('destinations.index')" :active="request()->routeIs('destinations.*')">
+                        {{ __('Destinations') }}
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
+                        {{ __('Activities') }}
+                    </x-nav-link>
+
                     <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
                         {{ __('Blog') }}
                     </x-nav-link>
@@ -49,6 +57,12 @@
                         @if(Auth::user()->role === 'admin')
                             <x-dropdown-link :href="route('admin.blogs.index')">
                                 {{ __('Manage Blogs') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('admin.destinations.index')">
+                                {{ __('Manage Destinations') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('admin.activities.index')">
+                                {{ __('Manage Activities') }}
                             </x-dropdown-link>
                         @endif
 
@@ -96,6 +110,14 @@
                 {{ __('Available Trips') }}
             </x-responsive-nav-link>
 
+            <x-responsive-nav-link :href="route('destinations.index')" :active="request()->routeIs('destinations.*')">
+                {{ __('Destinations') }}
+            </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('activities.index')" :active="request()->routeIs('activities.*')">
+                {{ __('Activities') }}
+            </x-responsive-nav-link>
+
             <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
                 {{ __('Blog') }}
             </x-responsive-nav-link>
@@ -112,6 +134,12 @@
                 @if(Auth::user()->role === 'admin')
                     <x-responsive-nav-link :href="route('admin.blogs.index')">
                         {{ __('Manage Blogs') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.destinations.index')">
+                        {{ __('Manage Destinations') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.activities.index')">
+                        {{ __('Manage Activities') }}
                     </x-responsive-nav-link>
                 @endif
 
