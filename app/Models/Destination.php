@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class Destination extends Model
@@ -38,8 +39,8 @@ class Destination extends Model
     ];
 
     protected $casts = [
-        'photo_gallery' => 'array',    // automatically converts JSON to array
-        'faqs' => 'array',             // automatically converts JSON to array
+        'photo_gallery' => 'array',
+        'faqs' => 'array',
         'is_published' => 'boolean',
         'latitude' => 'decimal:7',
         'longitude' => 'decimal:7',
@@ -70,5 +71,13 @@ class Destination extends Model
     public function scopePublished($query)
     {
         return $query->where('is_published', true);
+    }
+
+    /**
+     * Get all reviews for this destination (polymorphic).
+     */
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
     }
 }

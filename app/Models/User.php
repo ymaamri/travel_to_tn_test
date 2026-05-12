@@ -56,8 +56,29 @@ class User extends Authenticatable
         return $this->hasMany(Trip::class);
     }
 
-    public function blogs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    /**
+     * Get the blog posts written by this user.
+     */
+    public function blogs(): HasMany
     {
         return $this->hasMany(Blog::class);
+    }
+
+    /**
+     * Get the reviews written by this user.
+     */
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    /**
+     * Determine if the user is a verified traveler.
+     * A user is considered a verified traveler if they have posted at least one trip (as an agency).
+     * You can modify this logic later (e.g., check if they have any bookings).
+     */
+    public function hasVerifiedTravel(): bool
+    {
+        return $this->trips()->exists();
     }
 }

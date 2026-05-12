@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 
 class Establishment extends Model
@@ -82,5 +83,13 @@ class Establishment extends Model
             'luxury_dining' => 'Luxury Dining',
         ];
         return $labels[$this->category] ?? ucfirst($this->category);
+    }
+
+    /**
+     * Get all reviews for this establishment (polymorphic).
+     */
+    public function reviews(): MorphMany
+    {
+        return $this->morphMany(Review::class, 'reviewable');
     }
 }
