@@ -55,4 +55,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Trip::class);
     }
+
+    public function blogs(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Blog::class);
+    }
 }

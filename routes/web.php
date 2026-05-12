@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\BlogController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -10,6 +11,10 @@ Route::get('/', function () {
 
 // Public trip listing – anyone can see
 Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
+
+// Public blog routes
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{slug}', [BlogController::class, 'show'])->name('blog.show');
 
 // Dashboard – only logged‑in, shows the user's own trips
 Route::get('/dashboard', [TripController::class, 'myTrips'])
@@ -31,6 +36,16 @@ Route::middleware('auth')->group(function () {
 
     // Trip deletion
     Route::delete('/trips/{trip}', [TripController::class, 'destroy'])->name('trips.destroy');
+
+    // Admin blog management routes (only accessible by admins - we'll check in controller)
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('/blogs', [BlogController::class, 'adminIndex'])->name('blogs.index');
+        Route::get('/blogs/create', [BlogController::class, 'create'])->name('blogs.create');
+        Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+        Route::get('/blogs/{blog}/edit', [BlogController::class, 'edit'])->name('blogs.edit');
+        Route::patch('/blogs/{blog}', [BlogController::class, 'update'])->name('blogs.update');
+        Route::delete('/blogs/{blog}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+    });
 });
 
 require __DIR__ . '/auth.php';

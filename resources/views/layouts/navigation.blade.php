@@ -19,6 +19,10 @@
                     <x-nav-link :href="route('trips.index')" :active="request()->routeIs('trips.index')">
                         {{ __('Available Trips') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
+                        {{ __('Blog') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -42,6 +46,12 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        @if(Auth::user()->role === 'admin')
+                            <x-dropdown-link :href="route('admin.blogs.index')">
+                                {{ __('Manage Blogs') }}
+                            </x-dropdown-link>
+                        @endif
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
@@ -85,6 +95,10 @@
             <x-responsive-nav-link :href="route('trips.index')" :active="request()->routeIs('trips.index')">
                 {{ __('Available Trips') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
+                {{ __('Blog') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -95,6 +109,12 @@
             </div>
 
             <div class="mt-3 space-y-1">
+                @if(Auth::user()->role === 'admin')
+                    <x-responsive-nav-link :href="route('admin.blogs.index')">
+                        {{ __('Manage Blogs') }}
+                    </x-responsive-nav-link>
+                @endif
+
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
                 </x-responsive-nav-link>
