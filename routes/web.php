@@ -6,6 +6,7 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\EstablishmentController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -25,6 +26,10 @@ Route::get('/destinations/{slug}', [DestinationController::class, 'show'])->name
 // Public activities routes
 Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 Route::get('/activities/{slug}', [ActivityController::class, 'show'])->name('activities.show');
+
+// Public establishment (hotels & restaurants) routes
+Route::get('/directory', [EstablishmentController::class, 'index'])->name('directory.index');
+Route::get('/directory/{slug}', [EstablishmentController::class, 'show'])->name('directory.show');
 
 // Dashboard – only logged‑in, shows the user's own trips
 Route::get('/dashboard', [TripController::class, 'myTrips'])
@@ -73,6 +78,15 @@ Route::middleware('auth')->group(function () {
         Route::patch('/activities/{activity}', [ActivityController::class, 'update'])->name('activities.update');
         Route::delete('/activities/{activity}', [ActivityController::class, 'destroy'])->name('activities.destroy');
         Route::delete('/activities/{activity}/remove-image', [ActivityController::class, 'removeImage'])->name('activities.remove-image');
+
+        // Admin establishment (hotels/restaurants) management
+        Route::get('/establishments', [EstablishmentController::class, 'adminIndex'])->name('establishments.index');
+        Route::get('/establishments/create', [EstablishmentController::class, 'create'])->name('establishments.create');
+        Route::post('/establishments', [EstablishmentController::class, 'store'])->name('establishments.store');
+        Route::get('/establishments/{establishment}/edit', [EstablishmentController::class, 'edit'])->name('establishments.edit');
+        Route::patch('/establishments/{establishment}', [EstablishmentController::class, 'update'])->name('establishments.update');
+        Route::delete('/establishments/{establishment}', [EstablishmentController::class, 'destroy'])->name('establishments.destroy');
+        Route::delete('/establishments/{establishment}/remove-image', [EstablishmentController::class, 'removeImage'])->name('establishments.remove-image');
     });
 });
 

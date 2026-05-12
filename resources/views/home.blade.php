@@ -371,7 +371,7 @@
             <div class="cta-group">
                 <a href="#">Plan your trip</a>
                 <a href="{{ route('trips.index') }}">Explore destinations</a>
-                <a href="#">Find hotels</a>
+                <a href="{{ route('directory.index') }}">Hotels & Restaurants</a>
                 <a href="{{ route('blog.index') }}">Discover Tunisia</a>
             </div>
         </div>
@@ -507,6 +507,17 @@
                     @endforeach
                 </div>
             @else <p style="text-align:center;">No travel tips yet.</p> @endif
+        </div>
+
+        <!-- Hotels & Restaurants Directory Section -->
+        <div class="section" style="background: #fefcf8; border-radius: 48px;">
+            <h2 class="section-title">Where to Stay & Eat</h2>
+            <p class="section-sub">Curated hotels, traditional restaurants, and cozy cafés across Tunisia</p>
+            <div style="text-align: center; margin-top: 2rem;">
+                <a href="{{ route('directory.index') }}" class="btn-white"
+                    style="background: #e67e22; color: white; display: inline-block; padding: 0.8rem 2rem; border-radius: 50px; text-decoration: none; font-weight: 700;">Browse
+                    Directory →</a>
+            </div>
         </div>
 
         <!-- Testimonials -->

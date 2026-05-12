@@ -31,6 +31,10 @@
                     <x-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
                         {{ __('Blog') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('directory.index')" :active="request()->routeIs('directory.*')">
+                        {{ __('Directory') }}
+                    </x-nav-link>
                 </div>
             </div>
 
@@ -63,6 +67,9 @@
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('admin.activities.index')">
                                 {{ __('Manage Activities') }}
+                            </x-dropdown-link>
+                            <x-dropdown-link :href="route('admin.establishments.index')">
+                                {{ __('Manage Directory') }}
                             </x-dropdown-link>
                         @endif
 
@@ -121,6 +128,10 @@
             <x-responsive-nav-link :href="route('blog.index')" :active="request()->routeIs('blog.*')">
                 {{ __('Blog') }}
             </x-responsive-nav-link>
+
+            <x-responsive-nav-link :href="route('directory.index')" :active="request()->routeIs('directory.*')">
+                {{ __('Directory') }}
+            </x-responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -140,6 +151,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('admin.activities.index')">
                         {{ __('Manage Activities') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.establishments.index')">
+                        {{ __('Manage Directory') }}
                     </x-responsive-nav-link>
                 @endif
 
