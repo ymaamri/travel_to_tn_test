@@ -1,100 +1,189 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Post a New Trip') }}
-        </h2>
+        Create a New Trip
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
+    <div class="form-container">
+        <div class="form-card">
+            <form method="POST" action="{{ route('trips.store') }}" enctype="multipart/form-data">
+                @csrf
 
-                    <form method="POST" action="{{ route('trips.store') }}" enctype="multipart/form-data">
-                        @csrf
-
-                        <!-- Title -->
-                        <div class="mb-4">
-                            <x-input-label for="title" :value="__('Title')" />
-                            <x-text-input id="title" class="block mt-1 w-full" type="text" name="title"
-                                :value="old('title')" required autofocus />
-                            <x-input-error :messages="$errors->get('title')" class="mt-2" />
-                        </div>
-
-                        <!-- Destination -->
-                        <div class="mb-4">
-                            <x-input-label for="destination" :value="__('Destination')" />
-                            <x-text-input id="destination" class="block mt-1 w-full" type="text" name="destination"
-                                :value="old('destination')" required />
-                            <x-input-error :messages="$errors->get('destination')" class="mt-2" />
-                        </div>
-
-                        <!-- Description -->
-                        <div class="mb-4">
-                            <x-input-label for="description" :value="__('Description')" />
-                            <textarea id="description" name="description" rows="4"
-                                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
-                                required>{{ old('description') }}</textarea>
-                            <x-input-error :messages="$errors->get('description')" class="mt-2" />
-                        </div>
-
-                        <!-- Price -->
-                        <div class="mb-4">
-                            <x-input-label for="price" :value="__('Price (TND)')" />
-                            <x-text-input id="price" class="block mt-1 w-full" type="number" step="0.01" name="price"
-                                :value="old('price')" required />
-                            <x-input-error :messages="$errors->get('price')" class="mt-2" />
-                        </div>
-
-                        <!-- Date -->
-                        <div class="mb-4">
-                            <x-input-label for="date" :value="__('Date')" />
-                            <x-text-input id="date" class="block mt-1 w-full" type="date" name="date"
-                                :value="old('date')" required />
-                            <x-input-error :messages="$errors->get('date')" class="mt-2" />
-                        </div>
-
-                        <!-- Departure Time -->
-                        <div class="mb-4">
-                            <x-input-label for="departure_time" :value="__('Departure Time')" />
-                            <x-text-input id="departure_time" class="block mt-1 w-full" type="time"
-                                name="departure_time" :value="old('departure_time')" required />
-                            <x-input-error :messages="$errors->get('departure_time')" class="mt-2" />
-                        </div>
-
-                        <!-- Return Time -->
-                        <div class="mb-4">
-                            <x-input-label for="return_time" :value="__('Return Time')" />
-                            <x-text-input id="return_time" class="block mt-1 w-full" type="time" name="return_time"
-                                :value="old('return_time')" required />
-                            <x-input-error :messages="$errors->get('return_time')" class="mt-2" />
-                        </div>
-
-                        <!-- Available Seats -->
-                        <div class="mb-4">
-                            <x-input-label for="available_seats" :value="__('Available Seats')" />
-                            <x-text-input id="available_seats" class="block mt-1 w-full" type="number"
-                                name="available_seats" :value="old('available_seats')" required min="1" />
-                            <x-input-error :messages="$errors->get('available_seats')" class="mt-2" />
-                        </div>
-
-                        <!-- Image (optional) -->
-                        <div class="mb-4">
-                            <x-input-label for="image" :value="__('Image (optional)')" />
-                            <input type="file" id="image" name="image"
-                                class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm" />
-                            <x-input-error :messages="$errors->get('image')" class="mt-2" />
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <x-primary-button>
-                                {{ __('Post Trip') }}
-                            </x-primary-button>
-                        </div>
-                    </form>
-
+                <!-- Title -->
+                <div class="form-group">
+                    <label for="title">Title *</label>
+                    <input id="title" type="text" name="title" value="{{ old('title') }}" required autofocus>
+                    @error('title')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
                 </div>
-            </div>
+
+                <!-- Destination -->
+                <div class="form-group">
+                    <label for="destination">Destination *</label>
+                    <input id="destination" type="text" name="destination" value="{{ old('destination') }}" required>
+                    @error('destination')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                    <label for="description">Description *</label>
+                    <textarea id="description" name="description" rows="4" required>{{ old('description') }}</textarea>
+                    @error('description')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Price -->
+                <div class="form-group">
+                    <label for="price">Price (TND) *</label>
+                    <input id="price" type="number" step="0.01" name="price" value="{{ old('price') }}" required>
+                    @error('price')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Date -->
+                <div class="form-group">
+                    <label for="date">Date *</label>
+                    <input id="date" type="date" name="date" value="{{ old('date') }}" required>
+                    @error('date')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Departure Time -->
+                <div class="form-group">
+                    <label for="departure_time">Departure Time *</label>
+                    <input id="departure_time" type="time" name="departure_time" value="{{ old('departure_time') }}"
+                        required>
+                    @error('departure_time')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Return Time -->
+                <div class="form-group">
+                    <label for="return_time">Return Time *</label>
+                    <input id="return_time" type="time" name="return_time" value="{{ old('return_time') }}" required>
+                    @error('return_time')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Available Seats -->
+                <div class="form-group">
+                    <label for="available_seats">Available Seats *</label>
+                    <input id="available_seats" type="number" name="available_seats"
+                        value="{{ old('available_seats') }}" required min="1">
+                    @error('available_seats')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <!-- Image -->
+                <div class="form-group">
+                    <label for="image">Image (optional)</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    @error('image')
+                        <p class="error-message">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="form-actions">
+                    <a href="{{ route('dashboard') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-gold">Create Trip</button>
+                </div>
+            </form>
         </div>
     </div>
 </x-app-layout>
+
+<style>
+    .form-container {
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    .form-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        padding: 2.5rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-lighter);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    input[type="time"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        background: var(--sand-light);
+    }
+
+    input:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--tunisia-gold);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        background: white;
+    }
+
+    textarea {
+        resize: vertical;
+        min-height: 100px;
+    }
+
+    .error-message {
+        color: var(--tunisia-red);
+        font-size: 0.75rem;
+        margin-top: 0.3rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-lighter);
+    }
+
+    @media (max-width: 768px) {
+        .form-card {
+            padding: 1.5rem;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .form-actions .btn-outline,
+        .form-actions .btn-gold {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+</style>

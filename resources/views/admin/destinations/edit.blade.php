@@ -1,252 +1,243 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Destination') }}: {{ $destination->name }}
-        </h2>
+        Edit Destination: {{ $destination->name }}
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6">
-                    <form method="POST" action="{{ route('admin.destinations.update', $destination) }}"
-                        enctype="multipart/form-data">
-                        @csrf
-                        @method('PATCH')
+    <div class="admin-form-container">
+        <div class="admin-form-card">
+            <form method="POST" action="{{ route('admin.destinations.update', $destination) }}"
+                enctype="multipart/form-data">
+                @csrf
+                @method('PATCH')
 
-                        <!-- Basic info -->
-                        <div class="mb-4">
-                            <x-input-label for="name" :value="__('Destination Name')" />
-                            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name"
-                                :value="old('name', $destination->name)" required />
-                            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-                        </div>
+                <!-- Basic info -->
+                <div class="form-group">
+                    <label for="name">Destination Name <span class="required">*</span></label>
+                    <input type="text" id="name" name="name" class="form-control"
+                        value="{{ old('name', $destination->name) }}" required>
+                    @error('name') <span class="error-message">{{ $message }}</span> @enderror
+                </div>
 
-                        <div class="mb-4">
-                            <x-input-label for="type" :value="__('Type')" />
-                            <select name="type" id="type"
-                                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
-                                <option value="city" {{ $destination->type == 'city' ? 'selected' : '' }}>City</option>
-                                <option value="region" {{ $destination->type == 'region' ? 'selected' : '' }}>Region
-                                </option>
-                                <option value="beach" {{ $destination->type == 'beach' ? 'selected' : '' }}>Beach</option>
-                                <option value="historical_place" {{ $destination->type == 'historical_place' ? 'selected' : '' }}>Historical Place</option>
-                                <option value="island" {{ $destination->type == 'island' ? 'selected' : '' }}>Island
-                                </option>
-                                <option value="desert_area" {{ $destination->type == 'desert_area' ? 'selected' : '' }}>
-                                    Desert Area</option>
-                                <option value="village" {{ $destination->type == 'village' ? 'selected' : '' }}>Village
-                                </option>
-                            </select>
-                            <x-input-error :messages="$errors->get('type')" class="mt-2" />
-                        </div>
+                <div class="form-group">
+                    <label for="type">Type</label>
+                    <select name="type" id="type" class="form-control">
+                        <option value="city" {{ $destination->type == 'city' ? 'selected' : '' }}>City</option>
+                        <option value="region" {{ $destination->type == 'region' ? 'selected' : '' }}>Region</option>
+                        <option value="beach" {{ $destination->type == 'beach' ? 'selected' : '' }}>Beach</option>
+                        <option value="historical_place" {{ $destination->type == 'historical_place' ? 'selected' : '' }}>
+                            Historical Place</option>
+                        <option value="island" {{ $destination->type == 'island' ? 'selected' : '' }}>Island</option>
+                        <option value="desert_area" {{ $destination->type == 'desert_area' ? 'selected' : '' }}>Desert
+                            Area</option>
+                        <option value="village" {{ $destination->type == 'village' ? 'selected' : '' }}>Village</option>
+                    </select>
+                    @error('type') <span class="error-message">{{ $message }}</span> @enderror
+                </div>
 
-                        <!-- Overview -->
-                        <div class="mb-4">
-                            <x-input-label for="overview" :value="__('Overview')" />
-                            <textarea name="overview" id="overview" rows="4"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('overview', $destination->overview) }}</textarea>
-                        </div>
+                <!-- Overview -->
+                <div class="form-group">
+                    <label for="overview">Overview</label>
+                    <textarea name="overview" id="overview" rows="4"
+                        class="form-control">{{ old('overview', $destination->overview) }}</textarea>
+                    <p class="form-hint">A general introduction to the destination.</p>
+                </div>
 
-                        <!-- History -->
-                        <div class="mb-4">
-                            <x-input-label for="history" :value="__('History')" />
-                            <textarea name="history" id="history" rows="4"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('history', $destination->history) }}</textarea>
-                        </div>
+                <!-- History -->
+                <div class="form-group">
+                    <label for="history">History</label>
+                    <textarea name="history" id="history" rows="4"
+                        class="form-control">{{ old('history', $destination->history) }}</textarea>
+                </div>
 
-                        <!-- Things to do -->
-                        <div class="mb-4">
-                            <x-input-label for="things_to_do" :value="__('Things to do')" />
-                            <textarea name="things_to_do" id="things_to_do" rows="4"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('things_to_do', $destination->things_to_do) }}</textarea>
-                        </div>
+                <!-- Things to do -->
+                <div class="form-group">
+                    <label for="things_to_do">Things to do</label>
+                    <textarea name="things_to_do" id="things_to_do" rows="4"
+                        class="form-control">{{ old('things_to_do', $destination->things_to_do) }}</textarea>
+                </div>
 
-                        <!-- Best restaurants -->
-                        <div class="mb-4">
-                            <x-input-label for="best_restaurants" :value="__('Best restaurants')" />
-                            <textarea name="best_restaurants" id="best_restaurants" rows="3"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('best_restaurants', $destination->best_restaurants) }}</textarea>
-                        </div>
+                <!-- Best restaurants -->
+                <div class="form-group">
+                    <label for="best_restaurants">Best restaurants</label>
+                    <textarea name="best_restaurants" id="best_restaurants" rows="3"
+                        class="form-control">{{ old('best_restaurants', $destination->best_restaurants) }}</textarea>
+                </div>
 
-                        <!-- Hotels -->
-                        <div class="mb-4">
-                            <x-input-label for="hotels" :value="__('Hotels & accommodation')" />
-                            <textarea name="hotels" id="hotels" rows="3"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('hotels', $destination->hotels) }}</textarea>
-                        </div>
+                <!-- Hotels -->
+                <div class="form-group">
+                    <label for="hotels">Hotels & accommodation</label>
+                    <textarea name="hotels" id="hotels" rows="3"
+                        class="form-control">{{ old('hotels', $destination->hotels) }}</textarea>
+                </div>
 
-                        <!-- Weather -->
-                        <div class="mb-4">
-                            <x-input-label for="weather" :value="__('Weather')" />
-                            <x-text-input type="text" name="weather" class="block mt-1 w-full" :value="old('weather', $destination->weather)" />
-                        </div>
+                <!-- Weather -->
+                <div class="form-group">
+                    <label for="weather">Weather</label>
+                    <input type="text" name="weather" id="weather" class="form-control"
+                        value="{{ old('weather', $destination->weather) }}">
+                </div>
 
-                        <!-- Transportation -->
-                        <div class="mb-4">
-                            <x-input-label for="transportation" :value="__('Transportation')" />
-                            <x-text-input type="text" name="transportation" class="block mt-1 w-full"
-                                :value="old('transportation', $destination->transportation)" />
-                        </div>
+                <!-- Transportation -->
+                <div class="form-group">
+                    <label for="transportation">Transportation</label>
+                    <input type="text" name="transportation" id="transportation" class="form-control"
+                        value="{{ old('transportation', $destination->transportation) }}">
+                </div>
 
-                        <!-- Best season -->
-                        <div class="mb-4">
-                            <x-input-label for="best_season" :value="__('Best season to visit')" />
-                            <x-text-input type="text" name="best_season" class="block mt-1 w-full"
-                                :value="old('best_season', $destination->best_season)" />
-                        </div>
+                <!-- Best season -->
+                <div class="form-group">
+                    <label for="best_season">Best season to visit</label>
+                    <input type="text" name="best_season" id="best_season" class="form-control"
+                        value="{{ old('best_season', $destination->best_season) }}">
+                </div>
 
-                        <!-- Local foods -->
-                        <div class="mb-4">
-                            <x-input-label for="local_foods" :value="__('Local foods')" />
-                            <textarea name="local_foods" id="local_foods" rows="3"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('local_foods', $destination->local_foods) }}</textarea>
-                        </div>
+                <!-- Local foods -->
+                <div class="form-group">
+                    <label for="local_foods">Local foods</label>
+                    <textarea name="local_foods" id="local_foods" rows="3"
+                        class="form-control">{{ old('local_foods', $destination->local_foods) }}</textarea>
+                </div>
 
-                        <!-- Budget estimate -->
-                        <div class="mb-4">
-                            <x-input-label for="budget_estimate" :value="__('Budget estimate (e.g., $50-100/day)')" />
-                            <x-text-input type="text" name="budget_estimate" class="block mt-1 w-full"
-                                :value="old('budget_estimate', $destination->budget_estimate)" />
-                        </div>
+                <!-- Budget estimate -->
+                <div class="form-group">
+                    <label for="budget_estimate">Budget estimate (e.g., $50-100/day)</label>
+                    <input type="text" name="budget_estimate" id="budget_estimate" class="form-control"
+                        value="{{ old('budget_estimate', $destination->budget_estimate) }}">
+                </div>
 
-                        <!-- Safety info -->
-                        <div class="mb-4">
-                            <x-input-label for="safety_info" :value="__('Safety information')" />
-                            <textarea name="safety_info" rows="3"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('safety_info', $destination->safety_info) }}</textarea>
-                        </div>
+                <!-- Safety info -->
+                <div class="form-group">
+                    <label for="safety_info">Safety information</label>
+                    <textarea name="safety_info" id="safety_info" rows="3"
+                        class="form-control">{{ old('safety_info', $destination->safety_info) }}</textarea>
+                </div>
 
-                        <!-- Map embed URL -->
-                        <div class="mb-4">
-                            <x-input-label for="map_url" :value="__('Google Maps embed URL (iframe src)')" />
-                            <x-text-input type="url" name="map_url" class="block mt-1 w-full" :value="old('map_url', $destination->map_url)" placeholder="https://www.google.com/maps/embed?pb=..." />
-                        </div>
+                <!-- Map embed URL -->
+                <div class="form-group">
+                    <label for="map_url">Google Maps embed URL (iframe src)</label>
+                    <input type="url" name="map_url" id="map_url" class="form-control"
+                        value="{{ old('map_url', $destination->map_url) }}"
+                        placeholder="https://www.google.com/maps/embed?pb=...">
+                    <p class="form-hint">Paste the full embed URL from Google Maps.</p>
+                </div>
 
-                        <!-- Latitude/Longitude -->
-                        <div class="grid grid-cols-2 gap-4 mb-4">
-                            <div>
-                                <x-input-label for="latitude" :value="__('Latitude')" />
-                                <x-text-input type="text" name="latitude" class="block mt-1 w-full"
-                                    :value="old('latitude', $destination->latitude)" step="any" />
-                            </div>
-                            <div>
-                                <x-input-label for="longitude" :value="__('Longitude')" />
-                                <x-text-input type="text" name="longitude" class="block mt-1 w-full"
-                                    :value="old('longitude', $destination->longitude)" step="any" />
-                            </div>
-                        </div>
+                <!-- Latitude/Longitude -->
+                <div class="form-row">
+                    <div class="form-group half">
+                        <label for="latitude">Latitude</label>
+                        <input type="text" name="latitude" id="latitude" class="form-control"
+                            value="{{ old('latitude', $destination->latitude) }}" step="any">
+                    </div>
+                    <div class="form-group half">
+                        <label for="longitude">Longitude</label>
+                        <input type="text" name="longitude" id="longitude" class="form-control"
+                            value="{{ old('longitude', $destination->longitude) }}" step="any">
+                    </div>
+                </div>
 
-                        <!-- Existing gallery display -->
-                        @if($destination->photo_gallery && count($destination->photo_gallery) > 0)
-                            <div class="mb-4">
-                                <x-input-label :value="__('Current gallery images')" />
-                                <div class="flex flex-wrap gap-2 mt-2">
-                                    @foreach($destination->photo_gallery as $image)
-                                        <div class="relative">
-                                            <img src="{{ asset('storage/' . $image) }}" class="w-20 h-20 object-cover rounded">
-                                            <form method="POST"
-                                                action="{{ route('admin.destinations.remove-image', $destination) }}"
-                                                class="absolute top-0 right-0">
-                                                @csrf
-                                                @method('DELETE')
-                                                <input type="hidden" name="image" value="{{ $image }}">
-                                                <button type="submit"
-                                                    class="bg-red-600 text-white rounded-full w-5 h-5 text-xs flex items-center justify-center hover:bg-red-800">×</button>
-                                            </form>
-                                        </div>
-                                    @endforeach
+                <!-- Current gallery display -->
+                @if($destination->photo_gallery && count($destination->photo_gallery) > 0)
+                    <div class="form-group">
+                        <label>Current gallery images</label>
+                        <div class="photo-grid">
+                            @foreach($destination->photo_gallery as $image)
+                                <div class="photo-thumb">
+                                    <img src="{{ asset('storage/' . $image) }}" alt="Gallery image">
+                                    <form method="POST" action="{{ route('admin.destinations.remove-image', $destination) }}"
+                                        class="remove-form">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input type="hidden" name="image" value="{{ $image }}">
+                                        <button type="submit" class="remove-btn"
+                                            onclick="return confirm('Remove this image?')">×</button>
+                                    </form>
                                 </div>
+                            @endforeach
+                        </div>
+                        <p class="form-hint">Click × to remove an image. Images cannot be recovered.</p>
+                    </div>
+                @endif
+
+                <!-- Add new images -->
+                <div class="form-group">
+                    <label for="photo_gallery">Add more images</label>
+                    <input type="file" name="photo_gallery[]" id="photo_gallery" multiple accept="image/*"
+                        class="form-file">
+                    <p class="form-hint">Select images to add to the gallery. JPEG, PNG, JPG, GIF (max 2MB each).</p>
+                    @error('photo_gallery.*') <span class="error-message">{{ $message }}</span> @enderror
+                </div>
+
+                <!-- FAQs (dynamic) -->
+                <div class="form-group">
+                    <label>Frequently Asked Questions</label>
+                    <div id="faqs-container">
+                        @if($destination->faqs && count($destination->faqs) > 0)
+                            @foreach($destination->faqs as $faq)
+                                <div class="faq-item">
+                                    <input type="text" name="faq_question[]" value="{{ $faq['question'] }}"
+                                        placeholder="Question" class="form-control mb-2">
+                                    <textarea name="faq_answer[]" placeholder="Answer" rows="2"
+                                        class="form-control">{{ $faq['answer'] }}</textarea>
+                                    <button type="button" class="remove-faq btn-link-danger">Remove</button>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="faq-item">
+                                <input type="text" name="faq_question[]" placeholder="Question" class="form-control mb-2">
+                                <textarea name="faq_answer[]" placeholder="Answer" rows="2" class="form-control"></textarea>
+                                <button type="button" class="remove-faq btn-link-danger">Remove</button>
                             </div>
                         @endif
-
-                        <!-- Add new images -->
-                        <div class="mb-4">
-                            <x-input-label for="photo_gallery" :value="__('Add more images')" />
-                            <input type="file" name="photo_gallery[]" id="photo_gallery" multiple accept="image/*"
-                                class="block mt-1 w-full border border-gray-300 rounded-md shadow-sm" />
-                            <p class="text-sm text-gray-500 mt-1">Select images to add to the gallery.</p>
-                            <x-input-error :messages="$errors->get('photo_gallery.*')" class="mt-2" />
-                        </div>
-
-                        <!-- FAQs (dynamic) -->
-                        <div class="mb-4">
-                            <x-input-label :value="__('Frequently Asked Questions')" />
-                            <div id="faqs-container">
-                                @if($destination->faqs && count($destination->faqs) > 0)
-                                    @foreach($destination->faqs as $index => $faq)
-                                        <div class="faq-item mb-3 p-3 border rounded">
-                                            <input type="text" name="faq_question[]" value="{{ $faq['question'] }}"
-                                                placeholder="Question"
-                                                class="block w-full mb-2 border-gray-300 rounded-md shadow-sm" />
-                                            <textarea name="faq_answer[]" placeholder="Answer" rows="2"
-                                                class="block w-full border-gray-300 rounded-md shadow-sm">{{ $faq['answer'] }}</textarea>
-                                            <button type="button" class="remove-faq text-red-600 text-sm mt-1">Remove</button>
-                                        </div>
-                                    @endforeach
-                                @else
-                                    <div class="faq-item mb-3 p-3 border rounded">
-                                        <input type="text" name="faq_question[]" placeholder="Question"
-                                            class="block w-full mb-2 border-gray-300 rounded-md shadow-sm" />
-                                        <textarea name="faq_answer[]" placeholder="Answer" rows="2"
-                                            class="block w-full border-gray-300 rounded-md shadow-sm"></textarea>
-                                        <button type="button" class="remove-faq text-red-600 text-sm mt-1">Remove</button>
-                                    </div>
-                                @endif
-                            </div>
-                            <button type="button" id="add-faq" class="text-indigo-600 text-sm mt-1">+ Add another
-                                FAQ</button>
-                        </div>
-
-                        <!-- Nearby attractions -->
-                        <div class="mb-4">
-                            <x-input-label for="nearby_attractions" :value="__('Nearby attractions')" />
-                            <textarea name="nearby_attractions" rows="3"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('nearby_attractions', $destination->nearby_attractions) }}</textarea>
-                        </div>
-
-                        <!-- SEO meta -->
-                        <div class="mb-4">
-                            <x-input-label for="meta_title" :value="__('Meta title (SEO)')" />
-                            <x-text-input type="text" name="meta_title" class="block mt-1 w-full"
-                                :value="old('meta_title', $destination->meta_title)" />
-                        </div>
-                        <div class="mb-4">
-                            <x-input-label for="meta_description" :value="__('Meta description (SEO)')" />
-                            <textarea name="meta_description" rows="2"
-                                class="block mt-1 w-full border-gray-300 rounded-md shadow-sm">{{ old('meta_description', $destination->meta_description) }}</textarea>
-                        </div>
-
-                        <!-- Publish status -->
-                        <div class="mb-4">
-                            <label class="inline-flex items-center">
-                                <input type="checkbox" name="is_published" value="1"
-                                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" {{ $destination->is_published ? 'checked' : '' }}>
-                                <span class="ms-2 text-sm text-gray-600">Published</span>
-                            </label>
-                        </div>
-
-                        <div class="flex items-center justify-end mt-4">
-                            <a href="{{ route('admin.destinations.index') }}"
-                                class="inline-flex items-center px-4 py-2 bg-gray-300 border border-transparent rounded-md font-semibold text-xs text-gray-800 uppercase tracking-widest hover:bg-gray-400">Cancel</a>
-                            <x-primary-button class="ms-3">Update Destination</x-primary-button>
-                        </div>
-                    </form>
+                    </div>
+                    <button type="button" id="add-faq" class="btn-add">+ Add another FAQ</button>
                 </div>
-            </div>
+
+                <!-- Nearby attractions -->
+                <div class="form-group">
+                    <label for="nearby_attractions">Nearby attractions</label>
+                    <textarea name="nearby_attractions" id="nearby_attractions" rows="3"
+                        class="form-control">{{ old('nearby_attractions', $destination->nearby_attractions) }}</textarea>
+                </div>
+
+                <!-- SEO meta -->
+                <div class="form-group">
+                    <label for="meta_title">Meta title (SEO)</label>
+                    <input type="text" name="meta_title" id="meta_title" class="form-control"
+                        value="{{ old('meta_title', $destination->meta_title) }}">
+                </div>
+                <div class="form-group">
+                    <label for="meta_description">Meta description (SEO)</label>
+                    <textarea name="meta_description" id="meta_description" rows="2"
+                        class="form-control">{{ old('meta_description', $destination->meta_description) }}</textarea>
+                </div>
+
+                <!-- Publish status -->
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="is_published" value="1" {{ $destination->is_published ? 'checked' : '' }}>
+                        <span>Published</span>
+                    </label>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="form-actions">
+                    <a href="{{ route('admin.destinations.index') }}" class="btn-outline">Cancel</a>
+                    <button type="submit" class="btn-gold">Update Destination</button>
+                </div>
+            </form>
         </div>
     </div>
 
-    <!-- JavaScript for dynamic FAQs -->
     <script>
+        // Dynamic FAQs
         document.getElementById('add-faq').addEventListener('click', function () {
             let container = document.getElementById('faqs-container');
             let newItem = document.createElement('div');
-            newItem.className = 'faq-item mb-3 p-3 border rounded';
+            newItem.className = 'faq-item';
             newItem.innerHTML = `
-                <input type="text" name="faq_question[]" placeholder="Question" class="block w-full mb-2 border-gray-300 rounded-md shadow-sm" />
-                <textarea name="faq_answer[]" placeholder="Answer" rows="2" class="block w-full border-gray-300 rounded-md shadow-sm"></textarea>
-                <button type="button" class="remove-faq text-red-600 text-sm mt-1">Remove</button>
+                <input type="text" name="faq_question[]" placeholder="Question" class="form-control mb-2">
+                <textarea name="faq_answer[]" placeholder="Answer" rows="2" class="form-control"></textarea>
+                <button type="button" class="remove-faq btn-link-danger">Remove</button>
             `;
             container.appendChild(newItem);
             attachRemoveEvents();
@@ -266,3 +257,215 @@
         attachRemoveEvents();
     </script>
 </x-app-layout>
+
+<style>
+    .admin-form-container {
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    .admin-form-card {
+        background: var(--white);
+        border-radius: var(--radius-xl);
+        padding: 2.5rem;
+        box-shadow: var(--shadow-md);
+        border: 1px solid var(--border-lighter);
+    }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+        display: block;
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+    }
+
+    .required {
+        color: var(--tunisia-red);
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border: 1px solid var(--border-light);
+        border-radius: var(--radius-sm);
+        font-family: inherit;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        background: var(--sand-light);
+    }
+
+    .form-control:focus {
+        outline: none;
+        border-color: var(--tunisia-gold);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+        background: white;
+    }
+
+    textarea.form-control {
+        resize: vertical;
+    }
+
+    .form-file {
+        width: 100%;
+        padding: 0.5rem 0;
+        font-size: 0.9rem;
+    }
+
+    .form-hint {
+        font-size: 0.75rem;
+        color: var(--text-muted);
+        margin-top: 0.3rem;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .half {
+        flex: 1;
+        margin-bottom: 0;
+    }
+
+    .photo-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.8rem;
+        margin-top: 0.5rem;
+    }
+
+    .photo-thumb {
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    .photo-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border-light);
+    }
+
+    .remove-form {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+    }
+
+    .remove-btn {
+        background: var(--tunisia-red);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        font-size: 14px;
+        line-height: 1;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .faq-item {
+        background: var(--sand-light);
+        padding: 1rem;
+        border-radius: var(--radius-md);
+        margin-bottom: 1rem;
+        border: 1px solid var(--border-light);
+    }
+
+    .faq-item .form-control {
+        margin-bottom: 0.8rem;
+    }
+
+    .btn-link-danger {
+        background: none;
+        border: none;
+        color: var(--tunisia-red);
+        font-size: 0.75rem;
+        cursor: pointer;
+        padding: 0;
+        margin-top: 0.3rem;
+    }
+
+    .btn-add {
+        background: none;
+        border: none;
+        color: var(--med-blue);
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.3rem;
+        margin-top: 0.5rem;
+    }
+
+    .btn-add:hover {
+        color: var(--tunisia-red);
+    }
+
+    .checkbox-group {
+        margin-top: 0.5rem;
+    }
+
+    .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+        font-weight: normal;
+    }
+
+    .checkbox-label input {
+        width: auto;
+        cursor: pointer;
+    }
+
+    .error-message {
+        display: block;
+        font-size: 0.75rem;
+        color: var(--tunisia-red);
+        margin-top: 0.3rem;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid var(--border-lighter);
+    }
+
+    @media (max-width: 768px) {
+        .admin-form-card {
+            padding: 1.5rem;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-actions {
+            flex-direction: column-reverse;
+        }
+
+        .form-actions .btn-outline,
+        .form-actions .btn-gold {
+            width: 100%;
+            text-align: center;
+            justify-content: center;
+        }
+    }
+</style>

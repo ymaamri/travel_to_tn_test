@@ -1,77 +1,198 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Things To Do in Tunisia') }}
-        </h2>
+        Activities & Things to Do in Tunisia
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Category filter -->
-            <div class="mb-6 flex flex-wrap gap-2">
-                <a href="{{ route('activities.index') }}"
-                    class="px-4 py-2 rounded-full text-sm {{ !request('category') ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                    All
-                </a>
-                @foreach(['beaches', 'desert_tours', 'museums', 'roman_ruins', 'hiking', 'diving', 'nightlife', 'shopping', 'traditional_markets', 'food_tours', 'festivals'] as $cat)
-                    <a href="{{ route('activities.index', ['category' => $cat]) }}"
-                        class="px-4 py-2 rounded-full text-sm {{ request('category') == $cat ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
-                        {{ ucfirst(str_replace('_', ' ', $cat)) }}
-                    </a>
-                @endforeach
-            </div>
+    <div class="activities-intro">
+        <p>From camel treks in the Sahara to scuba diving in the Mediterranean, discover unforgettable experiences.</p>
+    </div>
 
-            @if($activities->count())
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    @foreach($activities as $activity)
-                        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg hover:shadow-md transition">
-                            @if($activity->photos && count($activity->photos) > 0)
-                                <img src="{{ asset('storage/' . $activity->photos[0]) }}" alt="{{ $activity->title }}"
-                                    class="w-full h-48 object-cover">
+    @if($activities->count())
+        <div class="activities-grid">
+            @foreach($activities as $activity)
+                <a href="{{ route('activities.show', $activity->slug) }}" class="activity-card-link">
+                    <article class="activity-card">
+                        <div class="card-image">
+                            @if($activity->photo_gallery && count($activity->photo_gallery) > 0)
+                                <img src="{{ asset('storage/' . $activity->photo_gallery[0]) }}" alt="{{ $activity->name }}"
+                                    loading="lazy">
                             @else
-                                <div class="w-full h-48 bg-gray-200 flex items-center justify-center text-gray-500">
-                                    No image
+                                <div class="no-image">
+                                    <i class="fas fa-hiking"></i>
                                 </div>
                             @endif
-                            <div class="p-4">
-                                <div class="text-xs text-gray-500 mb-1">
-                                    {{ ucfirst(str_replace('_', ' ', $activity->category)) }}
-                                </div>
-                                <h3 class="font-semibold text-lg mb-2">
-                                    <a href="{{ route('activities.show', $activity->slug) }}" class="hover:text-indigo-600">
-                                        {{ $activity->title }}
-                                    </a>
-                                </h3>
-                                @if($activity->price_range)
-                                    <div class="text-sm text-gray-600 mb-1">
-                                        <span class="font-medium">Price:</span> {{ $activity->price_range }}
-                                    </div>
-                                @endif
-                                @if($activity->duration)
-                                    <div class="text-sm text-gray-600 mb-1">
-                                        <span class="font-medium">Duration:</span> {{ $activity->duration }}
-                                    </div>
-                                @endif
-                                <p class="text-sm text-gray-600 mb-3">
-                                    {{ Str::limit($activity->description ?? 'No description yet.', 100) }}
-                                </p>
-                                <a href="{{ route('activities.show', $activity->slug) }}"
-                                    class="text-indigo-600 hover:text-indigo-900 text-sm">
-                                    View details →
-                                </a>
-                            </div>
+                            @if($activity->category)
+                                <div class="card-category-badge">{{ $activity->category }}</div>
+                            @endif
                         </div>
-                    @endforeach
-                </div>
-
-                <div class="mt-6">
-                    {{ $activities->links() }}
-                </div>
-            @else
-                <div class="bg-white rounded-lg shadow-sm p-8 text-center">
-                    <p class="text-gray-500">No activities found.</p>
-                </div>
-            @endif
+                        <div class="card-content">
+                            <h3 class="activity-name">{{ $activity->name }}</h3>
+                            <p class="activity-excerpt">
+                                {{ Str::limit($activity->description ?? 'No description yet.', 100) }}
+                            </p>
+                            <span class="view-link">Learn more <i class="fas fa-arrow-right"></i></span>
+                        </div>
+                    </article>
+                </a>
+            @endforeach
         </div>
-    </div>
+
+        <div class="pagination-wrapper">
+            {{ $activities->links() }}
+        </div>
+    @else
+        <div class="empty-state">
+            <i class="fas fa-hiking"></i>
+            <p>No activities found. Check back soon for new adventures!</p>
+        </div>
+    @endif
 </x-app-layout>
+
+<style>
+    .activities-intro {
+        text-align: center;
+        margin-bottom: 2rem;
+        color: var(--text-secondary);
+        font-size: 1.05rem;
+    }
+
+    .activities-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+        gap: 2.5rem;
+    }
+
+    .activity-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    .activity-card {
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-lighter);
+        transition: all var(--transition);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .activity-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+    }
+
+    .card-image {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        background: var(--sand-light);
+    }
+
+    .card-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.4s ease;
+    }
+
+    .activity-card:hover .card-image img {
+        transform: scale(1.04);
+    }
+
+    .no-image {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: var(--sand-light);
+        color: var(--text-muted);
+        font-size: 2.5rem;
+    }
+
+    .card-category-badge {
+        position: absolute;
+        bottom: 1rem;
+        left: 1rem;
+        background: rgba(193, 18, 31, 0.9);
+        color: white;
+        padding: 0.3rem 1rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        backdrop-filter: blur(4px);
+    }
+
+    .card-content {
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .activity-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.4rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+        color: var(--med-blue);
+        line-height: 1.3;
+    }
+
+    .activity-excerpt {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        margin-bottom: 1rem;
+        flex: 1;
+    }
+
+    .view-link {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--tunisia-red);
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
+        transition: gap 0.2s;
+    }
+
+    .activity-card:hover .view-link {
+        gap: 0.6rem;
+    }
+
+    .pagination-wrapper {
+        margin-top: 3rem;
+        display: flex;
+        justify-content: center;
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        background: var(--white);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-sm);
+        border: 1px solid var(--border-lighter);
+    }
+
+    .empty-state i {
+        font-size: 3rem;
+        color: var(--tunisia-gold);
+        margin-bottom: 1rem;
+    }
+
+    .empty-state p {
+        color: var(--text-secondary);
+    }
+
+    @media (max-width: 768px) {
+        .activities-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>

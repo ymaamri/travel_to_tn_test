@@ -9,11 +9,23 @@ use Illuminate\Support\Facades\Auth;
 class TripController extends Controller
 {
     /**
-     * Display a public listing of all trips.
+     * Display a public listing of all trips (optionally filtered by destination).
      */
-    public function index()
+    public function index(Request $request)
     {
-        $trips = Trip::with('user')->latest('date')->paginate(12);
+        $query = Trip::with('user');
+
+        // Filter by destination if provided
+        if ($request->filled('destination')) {
+            $destination = $request->input('destination');
+            $query->where('destination', 'like', '%' . $destination . '%');
+        }
+
+        $trips = $query->latest('date')->paginate(12);
+
+        // Keep the search term in the pagination links
+        $trips->appends(['destination' => $request->input('destination')]);
+
         return view('trips.index', compact('trips'));
     }
 
