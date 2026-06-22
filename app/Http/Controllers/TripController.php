@@ -66,33 +66,39 @@ class TripController extends Controller
     }
 
     /**
-     * Show the dashboard with the current user's trips (agency espace).
+     * Show the dashboard with trips (admin sees all, regular users see only theirs).
      */
     public function myTrips()
     {
-        $trips = Trip::where('user_id', Auth::id())
-            ->latest('date')
-            ->paginate(10);
+        if (Auth::user()->role === 'admin') {
+            $trips = Trip::with('user')->latest('date')->paginate(10);
+        } else {
+            $trips = Trip::where('user_id', Auth::id())
+                ->latest('date')
+                ->paginate(10);
+        }
         return view('dashboard', compact('trips'));
     }
 
     /**
-     * Show the form to edit an existing trip (only the owner can edit).
+     * Show the form to edit an existing trip (owner or admin can edit).
      */
     public function edit(Trip $trip)
     {
-        if ($trip->user_id !== Auth::id()) {
+        // Allow if user is the owner OR is an admin
+        if ($trip->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
         return view('trips.edit', compact('trip'));
     }
 
     /**
-     * Update the trip in the database.
+     * Update the trip in the database (owner or admin can update).
      */
     public function update(Request $request, Trip $trip)
     {
-        if ($trip->user_id !== Auth::id()) {
+        // Allow if user is the owner OR is an admin
+        if ($trip->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
 
@@ -118,11 +124,12 @@ class TripController extends Controller
     }
 
     /**
-     * Delete a trip (only the owner can delete).
+     * Delete a trip (owner or admin can delete).
      */
     public function destroy(Trip $trip)
     {
-        if ($trip->user_id !== Auth::id()) {
+        // Allow if user is the owner OR is an admin
+        if ($trip->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
             abort(403);
         }
 
@@ -131,9 +138,11 @@ class TripController extends Controller
         return redirect()->route('dashboard')->with('success', 'Trip deleted successfully!');
     }
 
+    /**
+     * Show a single trip (public).
+     */
     public function show(Trip $trip)
     {
         return view('trips.show', compact('trip'));
     }
-
 }
