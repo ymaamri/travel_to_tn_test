@@ -1,0 +1,6 @@
+[phases.build]
+# No need to manually specify providers; just ensure the PHP root directory is correct
+# The key is to tell Nixpacks this is a Laravel project, avoiding frontend static logic taking over location /
+
+[variables]
+NIXPACKS_PHP_ROOT_DIR = "/app/public"
